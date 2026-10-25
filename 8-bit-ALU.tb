@@ -1,0 +1,37 @@
+// Code your testbench here
+// or browse Examples
+module tb_alu;
+    reg [7:0] A, B;
+    reg [2:0] OpCode;
+    wire [7:0] ALU_Out;
+    wire CarryOut;
+
+    // Instantiate the ALU module
+    alu uut (
+        .A(A), 
+        .B(B), 
+        .OpCode(OpCode), 
+        .ALU_Out(ALU_Out), 
+        .CarryOut(CarryOut)
+    );
+
+    initial begin
+        // Setup wave dumping for EDA Playground
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb_alu);
+        
+        // Test Case 1: Addition (A = 10, B = 5) -> Expect 15
+        A = 8'd10; B = 8'd5; OpCode = 3'b000; #10;
+        
+        // Test Case 2: Subtraction (A = 10, B = 5) -> Expect 5
+        OpCode = 3'b001; #10;
+        
+        // Test Case 3: Bitwise AND (A = 8'b10101010, B = 8'b11110000) -> Expect 8'b10100000
+        A = 8'b10101010; B = 8'b11110000; OpCode = 3'b010; #10;
+        
+        // Test Case 4: Shift Left A (A = 8'd5 -> 8'b00000101) -> Expect 10 (8'b00001010)
+        A = 8'd5; OpCode = 3'b110; #10;
+
+        $finish;
+    end
+endmodule
